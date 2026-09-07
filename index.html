@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C&C Distribution | Executive Analytics Hub</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #050505;
+      --card-bg: rgba(18, 18, 20, 0.75);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-gold: #fbbf24;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-rose: #f43f5e;
+      --font-serif: "Times New Roman", Times, serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-serif);
+      margin: 0;
+      padding: 32px;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(251, 191, 36, 0.05) 0%, transparent 40%);
+    }
+
+    .header-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin: 0 0 8px 0;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(251, 191, 36, 0.05);
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    select {
+      width: 100%;
+      background: #09090b;
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      padding: 10px 14px;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select:focus { border-color: var(--accent-cyan); }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    }
+
+    .kpi-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .kpi-val {
+      font-size: 2.2rem;
+      margin: 12px 0 6px 0;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    .kpi-sub {
+      font-size: 0.85rem;
+      color: var(--accent-emerald);
+    }
+
+    .charts-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 1024px) { .charts-row { grid-template-columns: 1fr; } }
+
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .chart-card h3 {
+      margin-top: 0;
+      font-weight: 400;
+      font-size: 1.2rem;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+      color: var(--accent-gold);
+    }
+
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.95rem;
+    }
+
+    tr:hover { background: rgba(255, 255, 255, 0.02); }
+  </style>
+</head>
+<body>
+
+  <div class="header-panel">
+    <div>
+      <h1>C&C Executive Intelligence</h1>
+      <span style="color: var(--text-muted);">Institutional Performance & Financial Reconciliations</span>
+    </div>
+    <div class="badge">Live Analytics</div>
+  </div>
+
+  <div class="controls-grid">
+    <div class="control-group">
+      <label>Market Scope</label>
+      <select id="marketSelect" onchange="updateDashboard()">
+        <option value="ALL">Global Consolidated</option>
+        <option value="Baltics">Baltic Region</option>
+        <option value="Poland">Poland</option>
+        <option value="Czechia">Czechia</option>
+        <option value="Germany">Germany</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Fiscal Period</label>
+      <select id="yearSelect" onchange="updateDashboard()">
+        <option value="ALL">All Periods (2021-2024)</option>
+        <option value="2021">FY 2021</option>
+        <option value="2022">FY 2022</option>
+        <option value="2023">FY 2023</option>
+        <option value="2024">FY 2024</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Net Consolidated Revenue</div>
+      <div class="kpi-val" id="kpiRev" style="color: var(--accent-cyan);">€0</div>
+      <div class="kpi-sub">Normalized for FX & VAT</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Shipped Volume</div>
+      <div class="kpi-val" id="kpiUnits">0</div>
+      <div class="kpi-sub">Units Processed</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Order Volume</div>
+      <div class="kpi-val" id="kpiOrders">0</div>
+      <div class="kpi-sub" id="kpiAov">AOV: €0</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Return Frequency</div>
+      <div class="kpi-val" id="kpiReturns" style="color: var(--accent-rose);">0</div>
+      <div class="kpi-sub" id="kpiRetRate" style="color: var(--accent-rose);">Rate: 0%</div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Revenue Expansion Trajectory</h3>
+      <canvas id="trendChart" height="110"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Regional Revenue Share</h3>
+      <canvas id="marketChart"></canvas>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <h3 style="margin-top:0; color: var(--accent-gold); font-weight: 400;">Granular Market Breakdowns</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Market</th>
+          <th>Fiscal Year</th>
+          <th>Net Revenue (€)</th>
+          <th>Volume (Units)</th>
+          <th>Orders</th>
+          <th>Returns</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const dataset = [
+      { market: 'Baltics', year: '2021', rev: 1156130.89, units: 8420, orders: 1610, returns: 280 },
+      { market: 'Baltics', year: '2022', rev: 1590575.85, units: 11200, orders: 2150, returns: 340 },
+      { market: 'Baltics', year: '2023', rev: 2223944.08, units: 15400, orders: 2780, returns: 450 },
+      { market: 'Baltics', year: '2024', rev: 2856603.95, units: 19800, orders: 3412, returns: 580 },
+      { market: 'Poland', year: '2021', rev: 1129131.16, units: 5800, orders: 1120, returns: 210 },
+      { market: 'Poland', year: '2022', rev: 1472157.65, units: 7600, orders: 1480, returns: 290 },
+      { market: 'Poland', year: '2023', rev: 1983621.60, units: 10100, orders: 1980, returns: 380 },
+      { market: 'Poland', year: '2024', rev: 2529256.37, units: 12900, orders: 2309, returns: 470 },
+      { market: 'Czechia', year: '2021', rev: 356176.40, units: 1800, orders: 390, returns: 60 },
+      { market: 'Czechia', year: '2022', rev: 545894.89, units: 2700, orders: 580, returns: 90 },
+      { market: 'Czechia', year: '2023', rev: 636385.62, units: 3100, orders: 740, returns: 110 },
+      { market: 'Czechia', year: '2024', rev: 708417.48, units: 3500, orders: 973, returns: 130 },
+      { market: 'Germany', year: '2021', rev: 482125.22, units: 2100, orders: 490, returns: 110 },
+      { market: 'Germany', year: '2022', rev: 696017.25, units: 2900, orders: 710, returns: 150 },
+      { market: 'Germany', year: '2023', rev: 984295.01, units: 4100, orders: 1020, returns: 220 },
+      { market: 'Germany', year: '2024', rev: 1131454.84, units: 4755, orders: 1723, returns: 337 }
+    ];
+
+    let trendChart, marketChart;
+
+    function initCharts() {
+      const ctxTrend = document.getElementById('trendChart').getContext('2d');
+      const gradCyan = ctxTrend.createLinearGradient(0, 0, 0, 300);
+      gradCyan.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+      gradCyan.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+
+      trendChart = new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+          labels: ['2021', '2022', '2023', '2024'],
+          datasets: [{
+            label: 'Net Revenue (€)',
+            data: [],
+            borderColor: '#38bdf8',
+            backgroundColor: gradCyan,
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: '#fbbf24'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { family: 'Times New Roman' } } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { family: 'Times New Roman' } } }
+          }
+        }
+      });
+
+      const ctxMarket = document.getElementById('marketChart').getContext('2d');
+      marketChart = new Chart(ctxMarket, {
+        type: 'doughnut',
+        data: {
+          labels: ['Baltics', 'Poland', 'Czechia', 'Germany'],
+          datasets: [{
+            data: [],
+            backgroundColor: ['#38bdf8', '#fbbf24', '#34d399', '#f43f5e'],
+            borderColor: '#050505',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: '#f8fafc', font: { family: 'Times New Roman' } } } }
+        }
+      });
+    }
+
+    function updateDashboard() {
+      const m = document.getElementById('marketSelect').value;
+      const y = document.getElementById('yearSelect').value;
+
+      const filtered = dataset.filter(d => (m === 'ALL' || d.market === m) && (y === 'ALL' || d.year === y));
+
+      const totalRev = filtered.reduce((acc, curr) => acc + curr.rev, 0);
+      const totalUnits = filtered.reduce((acc, curr) => acc + curr.units, 0);
+      const totalOrders = filtered.reduce((acc, curr) => acc + curr.orders, 0);
+      const totalReturns = filtered.reduce((acc, curr) => acc + curr.returns, 0);
+
+      const aov = totalOrders > 0 ? (totalRev / totalOrders) : 0;
+      const retRate = totalUnits > 0 ? ((totalReturns / totalUnits) * 100) : 0;
+
+      document.getElementById('kpiRev').innerText = '€' + totalRev.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      document.getElementById('kpiUnits').innerText = totalUnits.toLocaleString('en-US');
+      document.getElementById('kpiOrders').innerText = totalOrders.toLocaleString('en-US');
+      document.getElementById('kpiReturns').innerText = totalReturns.toLocaleString('en-US');
+
+      document.getElementById('kpiAov').innerText = 'AOV: €' + aov.toFixed(2);
+      document.getElementById('kpiRetRate').innerText = 'Return Rate: ' + retRate.toFixed(1) + '%';
+
+      // Update Charts
+      const years = ['2021', '2022', '2023', '2024'];
+      trendChart.data.datasets[0].data = years.map(yr => 
+        dataset.filter(d => (m === 'ALL' || d.market === m) && d.year === yr)
+               .reduce((acc, curr) => acc + curr.rev, 0)
+      );
+      trendChart.update();
+
+      const markets = ['Baltics', 'Poland', 'Czechia', 'Germany'];
+      marketChart.data.datasets[0].data = markets.map(mkt => 
+        dataset.filter(d => d.market === mkt && (y === 'ALL' || d.year === y))
+               .reduce((acc, curr) => acc + curr.rev, 0)
+      );
+      marketChart.update();
+
+      // Update Table
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      filtered.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="color: var(--accent-cyan); font-weight: bold;">${row.market}</td>
+          <td>FY ${row.year}</td>
+          <td>€${row.rev.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+          <td>${row.units.toLocaleString('en-US')}</td>
+          <td>${row.orders.toLocaleString('en-US')}</td>
+          <td style="color: var(--accent-rose);">${row.returns.toLocaleString('en-US')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.onload = () => { initCharts(); updateDashboard(); };
+  </script>
+</body>
+</html>

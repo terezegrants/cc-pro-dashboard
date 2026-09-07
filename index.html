@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C&C Distribution | Executive Dashboard</title>
+  <title>C&C Distribution | Pastel Executive Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg: #0a0b10;
-      --card-bg: rgba(22, 24, 35, 0.85);
+      --bg: #0d0e15;
+      --card-bg: rgba(26, 27, 38, 0.7);
       --card-border: rgba(255, 255, 255, 0.1);
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
       
+      /* Pastel Palette */
       --pastel-mint: #a7f3d0;
       --pastel-lavender: #c084fc;
       --pastel-pink: #fbcfe8;
@@ -29,156 +30,147 @@
       color: var(--text-main);
       font-family: var(--font-serif);
       margin: 0;
-      padding: 24px;
+      padding: 32px;
       background-image: 
-        radial-gradient(circle at 10% 10%, rgba(192, 132, 252, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 90%, rgba(167, 243, 208, 0.08) 0%, transparent 40%);
+        radial-gradient(circle at 15% 15%, rgba(192, 132, 252, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(167, 243, 208, 0.08) 0%, transparent 45%);
     }
 
     .header-panel {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding-bottom: 16px;
+      padding-bottom: 24px;
       border-bottom: 1px solid var(--card-border);
-      margin-bottom: 20px;
+      margin-bottom: 32px;
     }
 
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.6rem;
       font-weight: 400;
-      margin: 0 0 6px 0;
+      margin: 0 0 8px 0;
       background: linear-gradient(135deg, #ffffff 0%, var(--pastel-pink) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .btn-group { display: flex; gap: 10px; }
-
-    .btn {
-      padding: 8px 16px;
+    .export-btn {
+      padding: 10px 22px;
       border-radius: 20px;
       border: 1px solid var(--pastel-lavender);
       color: var(--pastel-lavender);
       background: rgba(192, 132, 252, 0.1);
       cursor: pointer;
       font-family: var(--font-serif);
-      font-size: 0.85rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
     }
-    .btn:hover { 
+    .export-btn:hover { 
       background: var(--pastel-lavender); 
-      color: #0a0b10; 
+      color: #0d0e15; 
+      box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
     }
 
     .controls-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      padding: 16px;
-      border-radius: 12px;
+      padding: 20px;
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
     }
 
     .control-group label {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: var(--pastel-mint);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
     }
 
-    select, input[type="text"] {
+    select {
       width: 100%;
-      background: #12131c;
+      background: #13141f;
       color: var(--text-main);
       border: 1px solid var(--card-border);
-      padding: 8px;
+      padding: 10px 14px;
       font-family: var(--font-serif);
-      font-size: 0.9rem;
-      border-radius: 6px;
+      font-size: 1rem;
+      border-radius: 8px;
       outline: none;
     }
 
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 14px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
     }
 
     .kpi-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
 
-    .kpi-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-    .kpi-val { font-size: 1.8rem; margin: 6px 0 2px 0; font-weight: 400; }
-    .kpi-sub { font-size: 0.8rem; color: var(--text-muted); }
+    .kpi-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .kpi-val { font-size: 2.1rem; margin: 10px 0 4px 0; font-weight: 400; }
+    .kpi-sub { font-size: 0.85rem; color: var(--text-muted); }
 
-    .charts-grid-2col {
+    .charts-grid-top {
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
+      gap: 24px;
+      margin-bottom: 24px;
     }
 
-    .charts-grid-3col {
+    .charts-grid-bottom {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
     }
 
-    @media (max-width: 1000px) {
-      .charts-grid-2col, .charts-grid-3col { grid-template-columns: 1fr; }
+    @media (max-width: 1024px) {
+      .charts-grid-top, .charts-grid-bottom { grid-template-columns: 1fr; }
     }
 
     .chart-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 16px;
-      position: relative;
-      min-height: 250px;
-    }
-
-    .chart-container {
-      position: relative;
-      width: 100%;
-      height: 200px;
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
     }
 
     .chart-card h3 {
       margin-top: 0;
       font-weight: 400;
-      font-size: 1rem;
+      font-size: 1.15rem;
       border-bottom: 1px solid var(--card-border);
-      padding-bottom: 8px;
+      padding-bottom: 12px;
       color: var(--pastel-pink);
     }
 
     .table-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 18px;
-    }
-
-    .table-header-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
     }
 
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { font-size: 0.75rem; color: var(--pastel-mint); text-transform: uppercase; padding: 8px; border-bottom: 1px solid var(--card-border); }
-    td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.85rem; }
+    th { font-size: 0.85rem; color: var(--pastel-mint); text-transform: uppercase; padding: 12px; border-bottom: 1px solid var(--card-border); }
+    td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.95rem; }
+    tr:hover { background: rgba(255, 255, 255, 0.02); }
   </style>
 </head>
 <body>
@@ -186,19 +178,16 @@
   <div class="header-panel">
     <div>
       <h1>C&C Executive Intelligence</h1>
-      <span style="color: var(--text-muted);">Pastel Enterprise Analytics Platform</span>
+      <span style="color: var(--text-muted);">Pastel Luxe Edition · Reconciled Analytics</span>
     </div>
-    <div class="btn-group">
-      <button class="btn" onclick="resetFilters()">Reset Filters</button>
-      <button class="btn" onclick="exportCSV()">Export CSV</button>
-    </div>
+    <button class="export-btn" onclick="exportCSV()">Export Report (CSV)</button>
   </div>
 
   <div class="controls-grid">
     <div class="control-group">
       <label>Market Scope</label>
       <select id="marketSelect" onchange="updateDashboard()">
-        <option value="ALL">All Markets</option>
+        <option value="ALL">Global Consolidated</option>
         <option value="Baltics">Baltic Region</option>
         <option value="Poland">Poland</option>
         <option value="Czechia">Czechia</option>
@@ -208,41 +197,11 @@
     <div class="control-group">
       <label>Fiscal Period</label>
       <select id="yearSelect" onchange="updateDashboard()">
-        <option value="ALL">All Years (2021-2024)</option>
+        <option value="ALL">All Periods (2021-2024)</option>
         <option value="2021">FY 2021</option>
         <option value="2022">FY 2022</option>
         <option value="2023">FY 2023</option>
         <option value="2024">FY 2024</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label>Customer Segment</label>
-      <select id="segmentSelect" onchange="updateDashboard()">
-        <option value="ALL">All Segments</option>
-        <option value="Consumer">Consumer</option>
-        <option value="Business">Business</option>
-        <option value="Education">Education</option>
-        <option value="Reseller">Reseller</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label>Sales Channel</label>
-      <select id="channelSelect" onchange="updateDashboard()">
-        <option value="ALL">All Channels</option>
-        <option value="Web Shop">Web Shop</option>
-        <option value="Retail Store">Retail Store</option>
-        <option value="B2B Account">B2B Account</option>
-        <option value="Marketplace">Marketplace</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label>Product Family</label>
-      <select id="familySelect" onchange="updateDashboard()">
-        <option value="ALL">All Families</option>
-        <option value="Mac">Mac</option>
-        <option value="iPhone">iPhone</option>
-        <option value="iPad">iPad</option>
-        <option value="Accessories">Accessories</option>
       </select>
     </div>
   </div>
@@ -275,49 +234,40 @@
     </div>
   </div>
 
-  <div class="charts-grid-2col">
+  <div class="charts-grid-top">
     <div class="chart-card">
-      <h3>Revenue & Profit Expansion (€)</h3>
-      <div class="chart-container"><canvas id="trendChart"></canvas></div>
+      <h3>Revenue & Profit Trajectory (€)</h3>
+      <canvas id="trendChart" height="110"></canvas>
     </div>
     <div class="chart-card">
-      <h3>Regional Revenue Share</h3>
-      <div class="chart-container"><canvas id="marketChart"></canvas></div>
+      <h3>Regional Share</h3>
+      <canvas id="marketChart"></canvas>
     </div>
   </div>
 
-  <div class="charts-grid-3col">
+  <div class="charts-grid-bottom">
     <div class="chart-card">
-      <h3>Revenue by Product Line</h3>
-      <div class="chart-container"><canvas id="familyChart"></canvas></div>
+      <h3>Product Line Mix</h3>
+      <canvas id="familyChart"></canvas>
     </div>
     <div class="chart-card">
-      <h3>Sales Channel Split</h3>
-      <div class="chart-container"><canvas id="channelChart"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <h3>Customer Segment Share</h3>
-      <div class="chart-container"><canvas id="segmentChart"></canvas></div>
+      <h3>Distribution Channel Split</h3>
+      <canvas id="channelChart"></canvas>
     </div>
   </div>
 
   <div class="table-card">
-    <div class="table-header-controls">
-      <h3 style="margin:0; color: var(--pastel-lavender); font-weight: 400;">Granular Metrics Log</h3>
-      <input type="text" id="tableSearch" placeholder="Search data..." onkeyup="filterTable()" style="width: 200px;">
-    </div>
+    <h3 style="margin-top:0; color: var(--pastel-lavender); font-weight: 400;">Granular Financial Metrics</h3>
     <table>
       <thead>
         <tr>
           <th>Market</th>
-          <th>Year</th>
-          <th>Segment</th>
-          <th>Channel</th>
-          <th>Product</th>
-          <th>Revenue</th>
-          <th>Profit</th>
-          <th>Margin</th>
-          <th>Units</th>
+          <th>Fiscal Year</th>
+          <th>Net Revenue</th>
+          <th>Gross Profit</th>
+          <th>Profit Margin</th>
+          <th>Units Sold</th>
+          <th>Return Rate</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -326,36 +276,25 @@
 
   <script>
     const dataset = [
-      { market: 'Baltics', year: '2021', segment: 'Consumer', channel: 'Web Shop', family: 'Mac', rev: 420000, profit: 113400, units: 3100, orders: 600, returns: 100 },
-      { market: 'Baltics', year: '2021', segment: 'Business', channel: 'B2B Account', family: 'iPhone', rev: 380000, profit: 102600, units: 2800, orders: 510, returns: 90 },
-      { market: 'Baltics', year: '2022', segment: 'Consumer', channel: 'Web Shop', family: 'Mac', rev: 580000, profit: 156600, units: 4100, orders: 810, returns: 120 },
-      { market: 'Baltics', year: '2022', segment: 'Education', channel: 'Retail Store', family: 'iPad', rev: 410000, profit: 110700, units: 3200, orders: 580, returns: 80 },
-      { market: 'Baltics', year: '2023', segment: 'Business', channel: 'B2B Account', family: 'Mac', rev: 890000, profit: 240300, units: 6200, orders: 1100, returns: 180 },
-      { market: 'Baltics', year: '2023', segment: 'Consumer', channel: 'Web Shop', family: 'iPhone', rev: 750000, profit: 202500, units: 5100, orders: 950, returns: 150 },
-      { market: 'Baltics', year: '2024', segment: 'Business', channel: 'B2B Account', family: 'Mac', rev: 1120000, profit: 302400, units: 7800, orders: 1350, returns: 230 },
-      { market: 'Baltics', year: '2024', segment: 'Consumer', channel: 'Marketplace', family: 'Accessories', rev: 480000, profit: 129600, units: 3900, orders: 720, returns: 110 },
-
-      { market: 'Poland', year: '2021', segment: 'Consumer', channel: 'Web Shop', family: 'iPhone', rev: 410000, profit: 110700, units: 2100, orders: 410, returns: 80 },
-      { market: 'Poland', year: '2021', segment: 'Reseller', channel: 'B2B Account', family: 'Mac', rev: 390000, profit: 105300, units: 1900, orders: 380, returns: 70 },
-      { market: 'Poland', year: '2022', segment: 'Consumer', channel: 'Web Shop', family: 'Mac', rev: 560000, profit: 151200, units: 2900, orders: 560, returns: 110 },
-      { market: 'Poland', year: '2022', segment: 'Education', channel: 'Retail Store', family: 'iPad', rev: 380000, profit: 102600, units: 1900, orders: 370, returns: 70 },
-      { market: 'Poland', year: '2023', segment: 'Business', channel: 'B2B Account', family: 'Mac', rev: 780000, profit: 210600, units: 3900, orders: 770, returns: 150 },
-      { market: 'Poland', year: '2023', segment: 'Consumer', channel: 'Marketplace', family: 'iPhone', rev: 610000, profit: 164700, units: 3100, orders: 610, returns: 120 },
-      { market: 'Poland', year: '2024', segment: 'Business', channel: 'B2B Account', family: 'Mac', rev: 990000, profit: 267300, units: 5100, orders: 910, returns: 180 },
-      { market: 'Poland', year: '2024', segment: 'Consumer', channel: 'Web Shop', family: 'iPhone', rev: 780000, profit: 210600, units: 3900, orders: 710, returns: 140 },
-
-      { market: 'Czechia', year: '2021', segment: 'Consumer', channel: 'Web Shop', family: 'Mac', rev: 180000, profit: 48600, units: 900, orders: 200, returns: 30 },
-      { market: 'Czechia', year: '2022', segment: 'Business', channel: 'B2B Account', family: 'iPhone', rev: 270000, profit: 72900, units: 1300, orders: 290, returns: 40 },
-      { market: 'Czechia', year: '2023', segment: 'Consumer', channel: 'Retail Store', family: 'iPad', rev: 320000, profit: 86400, units: 1500, orders: 370, returns: 50 },
-      { market: 'Czechia', year: '2024', segment: 'Education', channel: 'Web Shop', family: 'Mac', rev: 360000, profit: 97200, units: 1800, orders: 490, returns: 70 },
-
-      { market: 'Germany', year: '2021', segment: 'Consumer', channel: 'Web Shop', family: 'Mac', rev: 240000, profit: 64800, units: 1000, orders: 240, returns: 50 },
-      { market: 'Germany', year: '2022', segment: 'Business', channel: 'B2B Account', family: 'iPhone', rev: 350000, profit: 94500, units: 1400, orders: 350, returns: 70 },
-      { market: 'Germany', year: '2023', segment: 'Consumer', channel: 'Marketplace', family: 'Accessories', rev: 490000, profit: 132300, units: 2000, orders: 510, returns: 110 },
-      { market: 'Germany', year: '2024', segment: 'Reseller', channel: 'B2B Account', family: 'Mac', rev: 570000, profit: 153900, units: 2400, orders: 860, returns: 170 }
+      { market: 'Baltics', year: '2021', rev: 1156130, profit: 312150, units: 8420, orders: 1610, returns: 280, mac: 620000, iphone: 380000, ipad: 100000, acc: 56130, web: 720000, retail: 300000, b2b: 136130 },
+      { market: 'Baltics', year: '2022', rev: 1590575, profit: 429450, units: 11200, orders: 2150, returns: 340, mac: 850000, iphone: 520000, ipad: 140000, acc: 80575, web: 980000, retail: 410000, b2b: 200575 },
+      { market: 'Baltics', year: '2023', rev: 2223944, profit: 600460, units: 15400, orders: 2780, returns: 450, mac: 1180000, iphone: 740000, ipad: 200000, acc: 103944, web: 1390000, retail: 580000, b2b: 253944 },
+      { market: 'Baltics', year: '2024', rev: 2856603, profit: 771280, units: 19800, orders: 3412, returns: 580, mac: 1520000, iphone: 960000, ipad: 250000, acc: 126603, web: 1780000, retail: 740000, b2b: 336603 },
+      { market: 'Poland', year: '2021', rev: 1129131, profit: 304865, units: 5800, orders: 1120, returns: 210, mac: 590000, iphone: 390000, ipad: 95000, acc: 54131, web: 680000, retail: 310000, b2b: 139131 },
+      { market: 'Poland', year: '2022', rev: 1472157, profit: 397480, units: 7600, orders: 1480, returns: 290, mac: 770000, iphone: 510000, ipad: 125000, acc: 67157, web: 890000, retail: 400000, b2b: 182157 },
+      { market: 'Poland', year: '2023', rev: 1983621, profit: 535570, units: 10100, orders: 1980, returns: 380, mac: 1040000, iphone: 690000, ipad: 165000, acc: 88621, web: 1210000, retail: 520000, b2b: 253621 },
+      { market: 'Poland', year: '2024', rev: 2529256, profit: 682890, units: 12900, orders: 2309, returns: 470, mac: 1330000, iphone: 880000, ipad: 210000, acc: 109256, web: 1540000, retail: 660000, b2b: 329256 },
+      { market: 'Czechia', year: '2021', rev: 356176, profit: 96160, units: 1800, orders: 390, returns: 60, mac: 180000, iphone: 125000, ipad: 32000, acc: 19176, web: 210000, retail: 100000, b2b: 46176 },
+      { market: 'Czechia', year: '2022', rev: 545894, profit: 147390, units: 2700, orders: 580, returns: 90, mac: 280000, iphone: 190000, ipad: 48000, acc: 27894, web: 320000, retail: 150000, b2b: 75894 },
+      { market: 'Czechia', year: '2023', rev: 636385, profit: 171820, units: 3100, orders: 740, returns: 110, mac: 330000, iphone: 220000, ipad: 56000, acc: 30385, web: 380000, retail: 170000, b2b: 86385 },
+      { market: 'Czechia', year: '2024', rev: 708417, profit: 191270, units: 3500, orders: 973, returns: 130, mac: 370000, iphone: 245000, ipad: 61000, acc: 32417, web: 420000, retail: 190000, b2b: 98417 },
+      { market: 'Germany', year: '2021', rev: 482125, profit: 130170, units: 2100, orders: 490, returns: 110, mac: 250000, iphone: 165000, ipad: 42000, acc: 25125, web: 290000, retail: 130000, b2b: 62125 },
+      { market: 'Germany', year: '2022', rev: 696017, profit: 187920, units: 2900, orders: 710, returns: 150, mac: 360000, iphone: 240000, ipad: 60000, acc: 36017, web: 410000, retail: 190000, b2b: 96017 },
+      { market: 'Germany', year: '2023', rev: 984295, profit: 265750, units: 4100, orders: 1020, returns: 220, mac: 510000, iphone: 340000, ipad: 85000, acc: 49295, web: 590000, retail: 270000, b2b: 124295 },
+      { market: 'Germany', year: '2024', rev: 1131454, profit: 305490, units: 4755, orders: 1723, returns: 337, mac: 590000, iphone: 390000, ipad: 98000, acc: 53454, web: 680000, retail: 310000, b2b: 141454 }
     ];
 
-    let trendChart, marketChart, familyChart, channelChart, segmentChart;
+    let trendChart, marketChart, familyChart, channelChart;
 
     function initCharts() {
       const fontOpt = { family: 'Times New Roman' };
@@ -365,52 +304,37 @@
         data: {
           labels: ['2021', '2022', '2023', '2024'],
           datasets: [
-            { label: 'Revenue (€)', data: [], borderColor: '#bae6fd', backgroundColor: 'rgba(186, 230, 253, 0.15)', fill: true, tension: 0.3 },
-            { label: 'Gross Profit (€)', data: [], borderColor: '#a7f3d0', backgroundColor: 'transparent', borderDash: [4, 4], tension: 0.3 }
+            { label: 'Revenue (€)', data: [], borderColor: '#bae6fd', backgroundColor: 'rgba(186, 230, 253, 0.15)', fill: true, tension: 0.35, borderWidth: 2 },
+            { label: 'Gross Profit (€)', data: [], borderColor: '#a7f3d0', backgroundColor: 'transparent', borderDash: [4, 4], tension: 0.35, borderWidth: 2 }
           ]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: fontOpt } } }, scales: { x: { ticks: { color: '#94a3b8', font: fontOpt } }, y: { ticks: { color: '#94a3b8', font: fontOpt } } } }
+        options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8', font: fontOpt } } }, scales: { x: { ticks: { color: '#94a3b8', font: fontOpt } }, y: { ticks: { color: '#94a3b8', font: fontOpt } } } }
       });
 
       marketChart = new Chart(document.getElementById('marketChart'), {
         type: 'doughnut',
-        data: { labels: ['Baltics', 'Poland', 'Czechia', 'Germany'], datasets: [{ data: [], backgroundColor: ['#bae6fd', '#c084fc', '#a7f3d0', '#fbcfe8'], borderColor: '#0a0b10', borderWidth: 2 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#f1f5f9', font: fontOpt } } } }
+        data: { labels: ['Baltics', 'Poland', 'Czechia', 'Germany'], datasets: [{ data: [], backgroundColor: ['#bae6fd', '#c084fc', '#a7f3d0', '#fbcfe8'], borderColor: '#0d0e15', borderWidth: 2 }] },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#f1f5f9', font: fontOpt } } } }
       });
 
       familyChart = new Chart(document.getElementById('familyChart'), {
         type: 'bar',
-        data: { labels: ['Mac', 'iPhone', 'iPad', 'Accessories'], datasets: [{ label: 'Revenue (€)', data: [], backgroundColor: ['#c084fc', '#bae6fd', '#a7f3d0', '#ffedd5'], borderRadius: 4 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#94a3b8', font: fontOpt } }, y: { ticks: { color: '#94a3b8', font: fontOpt } } } }
+        data: { labels: ['Mac', 'iPhone', 'iPad', 'Accessories'], datasets: [{ label: 'Revenue (€)', data: [], backgroundColor: ['#c084fc', '#bae6fd', '#a7f3d0', '#ffedd5'], borderRadius: 6 }] },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#94a3b8', font: fontOpt } }, y: { ticks: { color: '#94a3b8', font: fontOpt } } } }
       });
 
       channelChart = new Chart(document.getElementById('channelChart'), {
         type: 'pie',
-        data: { labels: ['Web Shop', 'Retail Store', 'B2B Account', 'Marketplace'], datasets: [{ data: [], backgroundColor: ['#bae6fd', '#fbcfe8', '#a7f3d0', '#ffedd5'], borderColor: '#0a0b10', borderWidth: 2 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#f1f5f9', font: fontOpt } } } }
-      });
-
-      segmentChart = new Chart(document.getElementById('segmentChart'), {
-        type: 'doughnut',
-        data: { labels: ['Consumer', 'Business', 'Education', 'Reseller'], datasets: [{ data: [], backgroundColor: ['#bae6fd', '#c084fc', '#a7f3d0', '#ffedd5'], borderColor: '#0a0b10', borderWidth: 2 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#f1f5f9', font: fontOpt } } } }
+        data: { labels: ['Web Shop', 'Retail Store', 'B2B Account'], datasets: [{ data: [], backgroundColor: ['#bae6fd', '#fbcfe8', '#a7f3d0'], borderColor: '#0d0e15', borderWidth: 2 }] },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#f1f5f9', font: fontOpt } } } }
       });
     }
 
     function updateDashboard() {
       const m = document.getElementById('marketSelect').value;
       const y = document.getElementById('yearSelect').value;
-      const s = document.getElementById('segmentSelect').value;
-      const c = document.getElementById('channelSelect').value;
-      const f = document.getElementById('familySelect').value;
 
-      const filtered = dataset.filter(d => 
-        (m === 'ALL' || d.market === m) &&
-        (y === 'ALL' || d.year === y) &&
-        (s === 'ALL' || d.segment === s) &&
-        (c === 'ALL' || d.channel === c) &&
-        (f === 'ALL' || d.family === f)
-      );
+      const filtered = dataset.filter(d => (m === 'ALL' || d.market === m) && (y === 'ALL' || d.year === y));
 
       const totalRev = filtered.reduce((a, b) => a + b.rev, 0);
       const totalProfit = filtered.reduce((a, b) => a + b.profit, 0);
@@ -433,87 +357,66 @@
 
       // Update Trends
       const years = ['2021', '2022', '2023', '2024'];
-      trendChart.data.datasets[0].data = years.map(yr => dataset.filter(d => (m === 'ALL' || d.market === m) && d.year === yr && (s === 'ALL' || d.segment === s) && (c === 'ALL' || d.channel === c) && (f === 'ALL' || d.family === f)).reduce((a, b) => a + b.rev, 0));
-      trendChart.data.datasets[1].data = years.map(yr => dataset.filter(d => (m === 'ALL' || d.market === m) && d.year === yr && (s === 'ALL' || d.segment === s) && (c === 'ALL' || d.channel === c) && (f === 'ALL' || d.family === f)).reduce((a, b) => a + b.profit, 0));
+      trendChart.data.datasets[0].data = years.map(yr => dataset.filter(d => (m === 'ALL' || d.market === m) && d.year === yr).reduce((a, b) => a + b.rev, 0));
+      trendChart.data.datasets[1].data = years.map(yr => dataset.filter(d => (m === 'ALL' || d.market === m) && d.year === yr).reduce((a, b) => a + b.profit, 0));
       trendChart.update();
 
       // Update Markets
       const markets = ['Baltics', 'Poland', 'Czechia', 'Germany'];
-      marketChart.data.datasets[0].data = markets.map(mkt => dataset.filter(d => d.market === mkt && (y === 'ALL' || d.year === y) && (s === 'ALL' || d.segment === s) && (c === 'ALL' || d.channel === c) && (f === 'ALL' || d.family === f)).reduce((a, b) => a + b.rev, 0));
+      marketChart.data.datasets[0].data = markets.map(mkt => dataset.filter(d => d.market === mkt && (y === 'ALL' || d.year === y)).reduce((a, b) => a + b.rev, 0));
       marketChart.update();
 
       // Update Product Families
-      const families = ['Mac', 'iPhone', 'iPad', 'Accessories'];
-      familyChart.data.datasets[0].data = families.map(fam => filtered.filter(d => d.family === fam).reduce((a, b) => a + b.rev, 0));
+      familyChart.data.datasets[0].data = [
+        filtered.reduce((a, b) => a + b.mac, 0),
+        filtered.reduce((a, b) => a + b.iphone, 0),
+        filtered.reduce((a, b) => a + b.ipad, 0),
+        filtered.reduce((a, b) => a + b.acc, 0)
+      ];
       familyChart.update();
 
       // Update Channels
-      const channels = ['Web Shop', 'Retail Store', 'B2B Account', 'Marketplace'];
-      channelChart.data.datasets[0].data = channels.map(chn => filtered.filter(d => d.channel === chn).reduce((a, b) => a + b.rev, 0));
+      channelChart.data.datasets[0].data = [
+        filtered.reduce((a, b) => a + b.web, 0),
+        filtered.reduce((a, b) => a + b.retail, 0),
+        filtered.reduce((a, b) => a + b.b2b, 0)
+      ];
       channelChart.update();
-
-      // Update Segments
-      const segments = ['Consumer', 'Business', 'Education', 'Reseller'];
-      segmentChart.data.datasets[0].data = segments.map(seg => filtered.filter(d => d.segment === seg).reduce((a, b) => a + b.rev, 0));
-      segmentChart.update();
 
       // Table Update
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
       filtered.forEach(row => {
         const rowMargin = ((row.profit / row.rev) * 100).toFixed(1);
+        const rowRetRate = ((row.returns / row.units) * 100).toFixed(1);
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td style="color: var(--pastel-blue); font-weight: bold;">${row.market}</td>
           <td>FY ${row.year}</td>
-          <td>${row.segment}</td>
-          <td>${row.channel}</td>
-          <td>${row.family}</td>
           <td>€${row.rev.toLocaleString()}</td>
           <td style="color: var(--pastel-mint);">€${row.profit.toLocaleString()}</td>
           <td>${rowMargin}%</td>
           <td>${row.units.toLocaleString()}</td>
+          <td style="color: var(--pastel-rose);">${rowRetRate}%</td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function resetFilters() {
-      document.getElementById('marketSelect').value = 'ALL';
-      document.getElementById('yearSelect').value = 'ALL';
-      document.getElementById('segmentSelect').value = 'ALL';
-      document.getElementById('channelSelect').value = 'ALL';
-      document.getElementById('familySelect').value = 'ALL';
-      document.getElementById('tableSearch').value = '';
-      updateDashboard();
-    }
-
-    function filterTable() {
-      const q = document.getElementById('tableSearch').value.toLowerCase();
-      const rows = document.querySelectorAll('#tableBody tr');
-      rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(q) ? '' : 'none';
-      });
-    }
-
     function exportCSV() {
-      let csv = 'Market,Year,Segment,Channel,Family,Revenue,Profit,Units,Orders,Returns\n';
+      let csv = 'Market,Year,Revenue,Profit,Units,Orders,Returns\n';
       dataset.forEach(d => {
-        csv += `${d.market},${d.year},${d.segment},${d.channel},${d.family},${d.rev},${d.profit},${d.units},${d.orders},${d.returns}\n`;
+        csv += `${d.market},${d.year},${d.rev},${d.profit},${d.units},${d.orders},${d.returns}\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
-      a.setAttribute('download', 'CC_Executive_Analytics_Report.csv');
+      a.setAttribute('download', 'CC_Pastel_Executive_Report.csv');
       a.click();
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initCharts();
-      updateDashboard();
-    });
+    window.onload = () => { initCharts(); updateDashboard(); };
   </script>
 </body>
 </html>
